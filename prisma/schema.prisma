@@ -51,6 +51,11 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  // App relations:
+  daos      UserDaoMemberships[]
+  proposals Proposal[]           @relation("proposing")
+  votes     Vote[]               @relation("voting")
 }
 
 model VerificationToken {
@@ -62,9 +67,89 @@ model VerificationToken {
 }
 
 // App models
+model Dao {
+  id   String  @id @default(cuid())
+  ipfs String? @db.VarChar(64)
 
-model Example {
-  id        String   @id @default(cuid())
+  name        String
+  description String? @db.Text
+
+  // App fields:
+  // profile? TODO
+  published Boolean @default(false)
+
+  // App relations:
+  proposals Proposal[]
+  votes     Vote[]
+  members   UserDaoMemberships[]
+}
+
+model UserDaoMemberships {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  dao   Dao    @relation(fields: [daoId], references: [id])
+  daoId String
+
+  @@id([userId, daoId])
+}
+
+model Proposal {
+  id   String  @id @default(cuid())
+  ipfs String? @db.VarChar(64)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  title String
+  body  String?
+
+  // boolean choices etc - TODO - model?
+  choices Json
+
+  // start, end block nums
+  start Int
+  end   Int
+
+  quorum Decimal @db.Decimal(64, 30)
+
+  // snapshot
+
+  // App fields:
+  published Boolean @default(false)
+
+  // Comments/Discussions?
+  // TODO
+
+  // App relations:
+  dao   Dao    @relation(fields: [daoId], references: [id])
+  daoId String
+
+  proposedBy   User?   @relation("proposing", fields: [proposedById], references: [id])
+  proposedById String?
+
+  votes Vote[]
+}
+
+model Vote {
+  id   String  @id @default(cuid())
+  ipfs String? @db.VarChar(64)
+
+  createdAt DateTime @default(now())
+
+  choice Json // could be boolean, choice etc - see Proposal.choices
+  reason String? @db.Text
+
+  // App relations:
+  dao   Dao    @relation(fields: [daoId], references: [id])
+  daoId String
+
+  proposal   Proposal @relation(fields: [proposalId], references: [id])
+  proposalId String
+
+  voter   User?   @relation("voting", fields: [voterId], references: [id])
+  voterId String?
 }
