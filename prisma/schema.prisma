@@ -107,8 +107,8 @@ model Proposal {
   title String
   body  String?
 
-  // boolean choices etc - TODO - model?
-  choices Json?
+  // TODO - model?s
+  choices Json @default(" {\"choices\": [\"Yes\", \"No\", \"Abstain\"]} ")
 
   // start, end block nums
   start Int?
