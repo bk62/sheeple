@@ -108,13 +108,13 @@ model Proposal {
   body  String?
 
   // boolean choices etc - TODO - model?
-  choices Json
+  choices Json?
 
   // start, end block nums
-  start Int
-  end   Int
+  start Int?
+  end   Int?
 
-  quorum Decimal @db.Decimal(64, 30)
+  quorum Decimal? @db.Decimal(64, 30)
 
   // snapshot
 

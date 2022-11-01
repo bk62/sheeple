@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@hookform/resolvers': ^2.9.10
   '@next-auth/prisma-adapter': ^1.0.4
   '@prisma/client': ^4.5.0
   '@tanstack/react-query': ^4.10.0
@@ -25,12 +26,14 @@ specifiers:
   prisma: ^4.5.0
   react: 18.2.0
   react-dom: 18.2.0
+  react-hook-form: ^7.38.0
   superjson: 1.9.1
   tailwindcss: ^3.2.0
   typescript: ^4.8.4
   zod: ^3.18.0
 
 dependencies:
+  '@hookform/resolvers': 2.9.10_react-hook-form@7.38.0
   '@next-auth/prisma-adapter': 1.0.5_lbkeu45xi35sokilhivpvmhs3m
   '@prisma/client': 4.5.0_prisma@4.5.0
   '@tanstack/react-query': 4.13.5_biqbaboplfbrettd7655fr4n2y
@@ -43,6 +46,7 @@ dependencies:
   next-superjson-plugin: 0.4.8_cstnvxw4arak3iequ6kqraxbne
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.38.0_react@18.2.0
   superjson: 1.9.1
   zod: 3.19.1
 
@@ -94,6 +98,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@hookform/resolvers/2.9.10_react-hook-form@7.38.0:
+    resolution: {integrity: sha512-JIL1DgJIlH9yuxcNGtyhsWX/PgNltz+5Gr6+8SX9fhXc/hPbEIk6wPI82nhgvp3uUb6ZfAM5mqg/x7KR7NAb+A==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.38.0_react@18.2.0
+    dev: false
 
   /@humanwhocodes/config-array/0.10.7:
     resolution: {integrity: sha512-MDl6D6sBsaV452/QSdX+4CXIjZhIcI0PELsxUjk4U828yd58vk3bTIvk/6w5FY+4hIy9sLW0sfrV7K7Kc++j/w==}
@@ -2169,6 +2181,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form/7.38.0_react@18.2.0:
+    resolution: {integrity: sha512-gxWW1kMeru9xR1GoR+Iw4hA+JBOM3SHfr4DWCUKY0xc7Vv1MLsF109oHtBeWl9shcyPFx67KHru44DheN0XY5A==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is/16.13.1:

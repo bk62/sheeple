@@ -22,6 +22,20 @@ const config = {
         }
       ]
     ]
-  }
-};
+  },
+  rewrites: async() => {
+    return [
+      {
+        source: "/daos/:id/proposals",
+        destination: "/proposals?daoId=:id"
+      },
+      {
+        source: "/daos/:id/proposals/create",
+        destination: "/proposals/create?daoId=:id"
+      }
+    ];
+  },
+}
+
+
 export default config;

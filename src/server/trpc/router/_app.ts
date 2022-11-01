@@ -1,9 +1,14 @@
 import { router } from "../trpc";
 import { authRouter } from "./auth";
-import { exampleRouter } from "./example";
+import { daoRouter } from "./dao";
+import { proposalRouter } from "./proposal";
+import { voteRouter } from "./vote";
+
 
 export const appRouter = router({
-  example: exampleRouter,
+  dao: daoRouter,
+  proposal: proposalRouter,
+  vote: voteRouter,
   auth: authRouter,
 });
 
