@@ -4,9 +4,11 @@ import React from "react";
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
 import { AddDaoSchema } from "../../server/trpc/validation_schemas";
+import { getSidebarLayout } from "../../components/layouts/sidebar";
+import { type NextPageWithLayout } from "../page";
 
 
-const AddDao: React.FC = () => {
+const AddDao: NextPageWithLayout = () => {
     const mutation = trpc.dao.add.useMutation();
     const form = useZodForm({
         schema: AddDaoSchema,
@@ -66,5 +68,7 @@ const AddDao: React.FC = () => {
         </div>
     )
 }
+
+AddDao.getLayout = getSidebarLayout;
 
 export default AddDao;
