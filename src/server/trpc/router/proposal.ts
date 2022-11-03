@@ -20,7 +20,7 @@ export const proposalRouter = router({
         )
         .query(
             async ({ input, ctx }) => {
-                const proposal = await ctx.prisma.proposal.findUnique({
+                const proposal = await ctx.prisma.proposal.findUniqueOrThrow({
                     where: {
                         id: String(input.id),
                         // published: true

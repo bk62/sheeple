@@ -20,7 +20,7 @@ export const daoRouter = router({
     )
     .query(
       async ({ input, ctx }) => {
-        const dao = await ctx.prisma.dao.findUnique({
+        const dao = await ctx.prisma.dao.findUniqueOrThrow({
           where: {
             id: String(input.id),
             // published: true, // TODO

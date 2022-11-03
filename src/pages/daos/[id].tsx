@@ -24,7 +24,7 @@ const DaoDetail: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>
     }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-    const dao = await prisma.dao.findUnique({
+    const query = {
         where: {
             id: String(params?.id),
             // published: true, // TODO
@@ -36,10 +36,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
                 }
             }
         }
-    });
-    return {
-        props: { dao }
+    };
+    try {
+        const dao = await prisma.dao.findUniqueOrThrow(query);
+        return {
+            props: { dao }
+        }
+    } catch (err) {
+        return {
+            notFound: true
+        }
     }
+
 }
 
 

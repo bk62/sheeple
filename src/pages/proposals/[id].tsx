@@ -10,14 +10,14 @@ const ProposalDetail: React.FC<InferGetServerSidePropsType<typeof getServerSideP
             <>
                 <h1>{proposal.title}</h1>
                 <p>{proposal.body ?? ""}</p>
-                <Link href={`/proposals/${encodeURIComponent(proposal.id)}/vote`}>Cast your Vote</Link>
+                <Link href={`/daos/${encodeURIComponent(proposal.dao.id)}/proposals/${encodeURIComponent(proposal.id)}/vote`}>Cast your Vote</Link>
                 <Link href={`/daos/${encodeURIComponent(proposal.dao.id)}`}>Back to DAO Dashboard</Link>
             </>
         )
     }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-    const proposal = await prisma.proposal.findUnique({
+    const query = {
         where: {
             id: String(params?.id),
             // published: true, // TODO
@@ -32,9 +32,16 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
                 }
             }
         },
-    });
-    return {
-        props: { proposal }
+    };
+    try {
+        const proposal = await prisma.proposal.findUniqueOrThrow(query);
+        return {
+            props: { proposal }
+        }
+    } catch (err) {
+        return {
+            notFound: true
+        }
     }
 }
 
