@@ -32,7 +32,11 @@ const config = {
       {
         source: "/daos/:id/proposals/create",
         destination: "/proposals/create?daoId=:id"
-      }
+      },
+      {
+        source: "/daos/:daoId/proposals/:proposalId/vote",
+        destination: "/proposals/vote?daoId=:daoId&proposalId=:proposalId"
+      },
     ];
   },
 }

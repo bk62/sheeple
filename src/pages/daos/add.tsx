@@ -1,5 +1,5 @@
-import Router from "next/router";
 import React from "react";
+import Link from "next/link";
 
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
@@ -63,7 +63,7 @@ const AddDao: NextPageWithLayout = () => {
                 <button disabled={mutation.isLoading} type="submit">
                     {mutation.isLoading ? "Adding..." : "Submit"}
                 </button>
-                <button onClick={() => Router.push("/daos")}>Cancel</button>
+                <Link href={`/daos`}>Back</Link>
             </form>
         </div>
     )

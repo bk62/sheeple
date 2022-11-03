@@ -1,33 +1,35 @@
 import React from "react";
-import Router, { useRouter } from "next/router";
+import Link from "next/link";
+import type { GetServerSideProps } from "next";
 
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
 import { CreateProposalSchema } from "../../server/trpc/validation_schemas";
 
 
-const CreateProposalForm: React.FC = () => {
-    const router = useRouter();
-    const { daoId } = router.query;
-    const hasDaoId = React.useMemo(() => !!daoId, [daoId]);
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+    const { daoId } = query;
+    return {
+        props: {
+            daoId
+        }
+    };
+
+}
+
+const CreateProposalForm: React.FC<{ daoId: string }> = ({ daoId }) => {
 
     const mutation = trpc.proposal.create.useMutation();
     const form = useZodForm({
         schema: CreateProposalSchema,
         defaultValues: {
-            daoId: "", // daoId as string, - passing value doesn't help, see triggerMutations  - TODO look intos
+            daoId: daoId,
             title: "",
             body: ""
         }
     });
 
     const triggerMutation = async (data: RouterTypes["proposal"]["create"]["input"]) => {
-        if (hasDaoId) {
-            data.daoId = daoId as string;
-        }
-        else {
-            data.daoId = "";
-        }
         await mutation.mutateAsync(data);
         form.reset();
     }
@@ -59,6 +61,9 @@ const CreateProposalForm: React.FC = () => {
                 )}
             </div>
 
+
+            <input type="hidden" {...form.register("daoId")} />
+
             {form.formState.errors.daoId?.message && (
                 <p>DAO ID associated with this proposal: {form.formState.errors.daoId?.message}</p>
             )}
@@ -74,7 +79,9 @@ const CreateProposalForm: React.FC = () => {
             <button disabled={mutation.isLoading} type="submit">
                 {mutation.isLoading ? "Creating..." : "Submit"}
             </button>
-            <button onClick={() => Router.push("/daos")}>Cancel</button>
+
+            <Link href={`/daos/${encodeURIComponent(daoId)}`}>Back to DAO</Link>
+
         </form>
     );
 }

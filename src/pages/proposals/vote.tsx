@@ -1,16 +1,30 @@
-import Router from "next/router";
 import React from "react";
+import Link from "next/link";
+import type { GetServerSideProps } from "next";
 
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
 import { VoteSchema } from "../../server/trpc/validation_schemas";
 
 
-const VoteOnProposal: React.FC = () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+    const { daoId, proposalId } = query;
+    return {
+        props: {
+            daoId,
+            proposalId
+        }
+    };
+
+}
+
+const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> = ({ daoId, proposalId }) => {
     const mutation = trpc.vote.vote.useMutation();
     const form = useZodForm({
         schema: VoteSchema,
         defaultValues: {
+            daoId: daoId,
+            proposalId: proposalId,
             choice: "",
             reason: "",
         }
@@ -50,9 +64,12 @@ const VoteOnProposal: React.FC = () => {
                     )}
                 </div>
 
+                <input type="hidden" {...form.register("daoId")} />
                 {form.formState.errors.daoId?.message && (
                     <p>DAO ID associated with this vote: {form.formState.errors.daoId?.message}</p>
                 )}
+
+                <input type="hidden" {...form.register("proposalId")} />
                 {form.formState.errors.proposalId?.message && (
                     <p>Proposal ID associated with this vote: {form.formState.errors.proposalId?.message}</p>
                 )}
@@ -71,7 +88,9 @@ const VoteOnProposal: React.FC = () => {
                 <button disabled={mutation.isLoading} type="submit">
                     {mutation.isLoading ? "Adding..." : "Submit"}
                 </button>
-                <button onClick={() => Router.push("/daos")}>Cancel</button>
+
+                <Link href={`/daos/${encodeURIComponent(daoId)}/vote`}>Back to DAO</Link>
+                <Link href={`/proposals/${encodeURIComponent(proposalId)}/vote`}>Back to proposal</Link>
             </form>
         </div>
     )
