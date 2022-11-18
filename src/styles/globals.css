@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+    .logo {
+
+text-shadow: rgba(107,100,242,0.58) 0px 0px 22px;
+
+
+    }
+
+    
+
+    form .form-title {
+
+    }
+    form .form-section-title {
+
+    }
+    form .fieldset {
+
+    }
+    form .form-input {
+        @apply pl-3.5 py-1.5 rounded-lg bg-transparent border-gray-500 placeholder-gray-400 text-gray-300 text-sm shadow-md focus:outline-1 focus:ring-blue-900 focus:ring-opacity-75;
+    }
+    form .form-input.form-input-error {
+        @apply  border-red-500;
+    }
+}
