@@ -28,7 +28,7 @@ const variantClassNames: Record<string, string> = {
     default: `bg-neutral-700 hover:bg-neutral-600  active:bg-neutral-800 focus:ring-neutral-400`,
     primary: `bg-blue-500 hover:bg-blue-400  active:bg-blue-700 focus:ring-blue-700`,
     secondary: `bg-blue-500 hover:bg-blue-400  active:bg-blue-700 focus:ring-blue-700`,
-    brand: `bg-blue-500 hover:bg-blue-400  active:bg-blue-700 focus:ring-blue-700`,
+    brand: `bg-purple-800 hover:bg-purple-600  active:bg-purple-700 focus:ring-purple-700`,
     warning: `bg-blue-500 hover:bg-blue-400  active:bg-blue-700 focus:ring-blue-700`
 }
 

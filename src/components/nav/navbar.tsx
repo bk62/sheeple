@@ -6,6 +6,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
+import Button from "../controls/buttons";
 import Logo from "../misc/logo";
 
 
@@ -56,14 +57,24 @@ const Navbar: React.FC = (props) => {
                             </li> */}
 
                             <li className="flex items-center">
-                                <button
-                                    className="bg-dark-purple text-gray-100 active:bg-blueGray-50 text-xs uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                                {/* <button
+                                    className="bg-purple-800 hover:bg-purple-700 text-gray-100 active:bg-blueGray-50 text-xs uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
                                     type="button"
                                     onClick={session ? () => signOut : () => signIn()}
                                 >
                                     <FontAwesomeIcon icon={session ? faSignOut : faSignIn} className="pr-1 text-xss" />{" "}
                                     {session ? "Sign Out" : "Sign In"}
-                                </button>
+                                </button> */}
+                                <Button
+                                    className="lg:mr-1 lg:mb-0 ml-3 mb-3 text-xs"
+                                    variant={session ? "default" : "brand"}
+                                    type="button"
+                                    onClick={session ? () => signOut : () => signIn()}
+                                >
+                                    <FontAwesomeIcon icon={session ? faSignOut : faSignIn} className="pr-1 text-xss" />{" "}
+
+                                    {session ? "Sign Out" : "Sign In"}
+                                </Button>
                             </li>
                         </ul>
                     </div>
