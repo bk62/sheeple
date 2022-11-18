@@ -4,11 +4,17 @@ import { VoteSchema } from "../validation_schemas";
 
 
 export const voteRouter = router({
-    vote: publicProcedure
+    vote: protectedProcedure
         .input(VoteSchema)
         .mutation(
             async ({ input, ctx }) => {
-                const vote = await ctx.prisma.vote.create({ data: input });
+                const voterId = ctx.session?.user?.id;
+                const vote = await ctx.prisma.vote.create({
+                    data: {
+                        ...input,
+                        voterId
+                    }
+                });
                 return vote;
             }
         ),

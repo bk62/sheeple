@@ -5,22 +5,17 @@
 
 @layer components {
     .logo {
-
-text-shadow: rgba(107,100,242,0.58) 0px 0px 22px;
-
-
+        text-shadow: rgba(107,100,242,0.58) 0px 0px 22px;
     }
 
-    
-
-    form .form-title {
-
+    .form-title {
+        @apply text-blue-500 text-2xl font-bold tracking-wide my-2;
     }
-    form .form-section-title {
-
+    .form-subtitle {
+        @apply text-gray-400 mb-8 text-xs;
     }
-    form .fieldset {
-
+    form fieldset .form-label {
+        @apply text-gray-400 text-sm uppercase tracking-wide pb-2 pr-2 mb-2;
     }
     form .form-input {
         @apply pl-3.5 py-1.5 rounded-lg bg-transparent border-gray-500 placeholder-gray-400 text-gray-300 text-sm shadow-md focus:outline-1 focus:ring-blue-900 focus:ring-opacity-75;

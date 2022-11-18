@@ -18,9 +18,9 @@ export const CreateProposalSchema = z.object({
 
 
 export const VoteSchema = z.object({
-    choice: z.string(), // TODO one of ...
+    choice: z.string({ required_error: "Choice is required." }).min(1, { message: "Choice is required." }), // TODO one of ...
     reason: z.string().optional(),
     daoId: z.string().min(1),
     proposalId: z.string().min(1),
-    voterId: z.string().min(1) //
+    // voterId: z.string().min(1) //
 })

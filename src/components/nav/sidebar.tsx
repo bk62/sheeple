@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes, faUsers, faFileInvoice, faPersonBooth, faCheckToSlot, faTableColumns } from "@fortawesome/free-solid-svg-icons";
 
 import Logo from "../misc/logo";
 
@@ -14,23 +14,23 @@ import Logo from "../misc/logo";
 const navLinks = [
     {
         name: "Dashboard",
-        url: "",
-        icon: null
+        url: "/dashboard",
+        icon: faTableColumns
     },
     {
         name: "DAOs",
-        url: "",
-        icon: null
+        url: "/daos",
+        icon: faUsers
     },
     {
         name: "Proposals",
-        url: "",
-        icon: null
+        url: "/proposals",
+        icon: faFileInvoice
     },
     {
         name: "Votes",
-        url: "",
-        icon: null
+        url: "/votes",
+        icon: faCheckToSlot
     },
 
 ];
@@ -103,18 +103,18 @@ const Sidebar: React.FC = () => {
                                                 className={
                                                     "text-xs uppercase py-3  block " +
                                                     (router.pathname.indexOf(link.url) !== -1
-                                                        ? "text-lightBlue-500 hover:text-lightBlue-600"
-                                                        : "text-gray-700 hover:text-gray-500")
+                                                        ? "text-blue-500 hover:text-blue-600"
+                                                        : "text-gray-400 hover:text-gray-300")
                                                 }
                                             >
                                                 {link.icon && (
                                                     <FontAwesomeIcon
                                                         icon={link.icon}
                                                         className={
-                                                            "fmr-2 text-sm " +
+                                                            "mr-2 text-sm " +
                                                             (router.pathname.indexOf(link.url) !== -1
                                                                 ? "opacity-75"
-                                                                : "text-gray-300")
+                                                                : "text-gray-400")
                                                         }
                                                     />
                                                 )}

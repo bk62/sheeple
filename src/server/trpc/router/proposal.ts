@@ -4,11 +4,17 @@ import { CreateProposalSchema } from "../validation_schemas";
 
 
 export const proposalRouter = router({
-    create: publicProcedure // TODO protectedProcedure
+    create: protectedProcedure
         .input(CreateProposalSchema)
         .mutation(
             async ({ input, ctx }) => {
-                const proposal = await ctx.prisma.proposal.create({ data: input });
+                const proposedById = ctx.session?.user?.id;
+                const proposal = await ctx.prisma.proposal.create({
+                    data: {
+                        ...input,
+                        proposedById
+                    }
+                });
                 return proposal;
             }
         ),

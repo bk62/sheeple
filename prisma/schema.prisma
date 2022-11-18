@@ -108,7 +108,7 @@ model Proposal {
   body  String?
 
   // TODO - model?s
-  choices Json @default(" {\"choices\": [\"Yes\", \"No\", \"Abstain\"]} ")
+  choices Json @default(" {\"choices\": [\"No\", \"Yes\", \"Abstain\"]} ")
 
   // start, end block nums
   start Int?
