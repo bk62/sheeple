@@ -2,9 +2,11 @@ import React from "react";
 import Link from "next/link";
 import type { GetServerSideProps } from "next";
 
+import type { WithGetLayout } from "../page";
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
 import { VoteSchema } from "../../server/trpc/validation_schemas";
+import { getSidebarLayout } from "../../components/layouts/sidebar";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -18,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 }
 
-const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> = ({ daoId, proposalId }) => {
+const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetLayout = ({ daoId, proposalId }) => {
     const mutation = trpc.vote.vote.useMutation();
     const form = useZodForm({
         schema: VoteSchema,
@@ -95,5 +97,7 @@ const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> = ({ daoId
         </div>
     )
 }
+
+VoteOnProposal.getLayout = getSidebarLayout;
 
 export default VoteOnProposal;

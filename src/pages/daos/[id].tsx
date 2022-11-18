@@ -3,8 +3,11 @@ import React from "react";
 import Link from "next/link";
 
 import { prisma } from "../../server/db/client";
+import { getSidebarLayout } from "../../components/layouts/sidebar";
+import type { WithGetLayout } from "../page";
 
-const DaoDetail: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>>
+
+const DaoDetail: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> & WithGetLayout
     = ({ dao }) => {
         return (
             <>
@@ -50,6 +53,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 }
 
+DaoDetail.getLayout = getSidebarLayout;
 
 export default DaoDetail;
 

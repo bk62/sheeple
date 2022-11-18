@@ -2,10 +2,12 @@ import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import React from "react";
 
+import type { WithGetLayout } from "../page";
 import { prisma } from "../../server/db/client";
+import { getSidebarLayout } from "../../components/layouts/sidebar";
 
 
-const DaoList: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ daos }) => {
+const DaoList: React.FC<InferGetStaticPropsType<typeof getStaticProps>> & WithGetLayout = ({ daos }) => {
     return (
         <>
             <Link href="/daos/add">Add a DAO</Link>
@@ -31,5 +33,7 @@ export const getStaticProps: GetStaticProps = async () => {
         revalidate: 10
     }
 }
+
+DaoList.getLayout = getSidebarLayout;
 
 export default DaoList;

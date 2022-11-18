@@ -2,9 +2,11 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import React from "react";
 import Link from "next/link";
 
+import type { WithGetLayout } from "../page";
 import { prisma } from "../../server/db/client";
+import { getSidebarLayout } from "../../components/layouts/sidebar";
 
-const ProposalDetail: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>>
+const ProposalDetail: React.FunctionComponent<InferGetServerSidePropsType<typeof getServerSideProps>> & WithGetLayout
     = ({ proposal }) => {
         return (
             <>
@@ -45,6 +47,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }
 }
 
+
+ProposalDetail.getLayout = getSidebarLayout
 
 export default ProposalDetail;
 

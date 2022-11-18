@@ -2,9 +2,11 @@ import React from "react";
 import Link from "next/link";
 import type { GetServerSideProps } from "next";
 
+import type { WithGetLayout } from "../page";
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
 import { CreateProposalSchema } from "../../server/trpc/validation_schemas";
+import { getSidebarLayout } from "../../components/layouts/sidebar";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -17,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 }
 
-const CreateProposalForm: React.FC<{ daoId: string }> = ({ daoId }) => {
+const CreateProposalForm: React.FC<{ daoId: string }> & WithGetLayout = ({ daoId }) => {
 
     const mutation = trpc.proposal.create.useMutation();
     const form = useZodForm({
@@ -85,5 +87,7 @@ const CreateProposalForm: React.FC<{ daoId: string }> = ({ daoId }) => {
         </form>
     );
 }
+
+CreateProposalForm.getLayout = getSidebarLayout
 
 export default CreateProposalForm;
