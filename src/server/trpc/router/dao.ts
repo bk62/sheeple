@@ -4,7 +4,7 @@ import { AddDaoSchema } from "../validation_schemas";
 
 
 export const daoRouter = router({
-  add: publicProcedure // TODO protectedProcedure
+  add: protectedProcedure
     .input(AddDaoSchema)
     .mutation(
       async ({ input, ctx }) => {
