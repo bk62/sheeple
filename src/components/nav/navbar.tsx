@@ -29,7 +29,7 @@ const Navbar: React.FC = (props) => {
                     </div>
                     <div
                         className={
-                            "lg:flex flex-grow items-center bg-gray-900 lg:bg-opacity-0 lg:shadow-none" +
+                            "lg:flex flex-grow items-center bg-dark-gray lg:bg-opacity-0 lg:shadow-none" +
                             (navbarOpen ? " block rounded shadow-lg" : " hidden")
                         }
                         id="example-navbar-warning"
