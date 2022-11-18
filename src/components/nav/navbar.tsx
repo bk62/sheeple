@@ -1,14 +1,17 @@
 
 import React from "react";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faSignIn, faRegistered } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
 import Logo from "../misc/logo";
 
 
 const Navbar: React.FC = (props) => {
+    const { data: session } = useSession();
+
     const [navbarOpen, setNavbarOpen] = React.useState(false);
     return (
         <>
@@ -56,9 +59,10 @@ const Navbar: React.FC = (props) => {
                                 <button
                                     className="bg-dark-purple text-gray-100 active:bg-blueGray-50 text-xs uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
                                     type="button"
+                                    onClick={session ? () => signOut : () => signIn()}
                                 >
-                                    <FontAwesomeIcon icon={faSignIn} className="pr-1 text-xss" />{" "}
-                                    Start
+                                    <FontAwesomeIcon icon={session ? faSignOut : faSignIn} className="pr-1 text-xss" />{" "}
+                                    {session ? "Sign Out" : "Sign In"}
                                 </button>
                             </li>
                         </ul>

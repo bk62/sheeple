@@ -2,7 +2,7 @@ import React from "react";
 
 import Logo from "../misc/logo";
 
-// import UserDropdown from "components/Dropdowns/UserDropdown.js";
+import UserDropdown from "../dropdowns/UserDropdown";
 
 export default function Navbar() {
     return (
@@ -34,7 +34,7 @@ export default function Navbar() {
                     </form> */}
                     {/* User */}
                     <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-                        {/* <UserDropdown /> */}
+                        <UserDropdown />
 
                     </ul>
                 </div>
