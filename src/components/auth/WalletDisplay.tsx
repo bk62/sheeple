@@ -6,7 +6,7 @@ interface WalletDisplayProps {
     address: string;
     start?: number;
     end?: number;
-    className?: "";
+    className?: string;
     resolveEns?: boolean;
 }
 

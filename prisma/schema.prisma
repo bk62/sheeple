@@ -143,6 +143,10 @@ model Vote {
   choice Json // could be boolean, choice etc - see Proposal.choices
   reason String? @db.Text
 
+  choiceCode       Int? // e.g. 0, 1, 2
+  signatureMessage String? // unhashed message that is signed w/ wallet
+  signature        String? // signed message
+
   // App relations:
   dao   Dao    @relation(fields: [daoId], references: [id])
   daoId String

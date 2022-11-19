@@ -1,6 +1,15 @@
 # Create T3 App
 
-This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
+# TODO
+
+
+[] More accurate prisma models
+[] auth, protected trpc mutations and proposed by field
+
+[] tailwind components
+[] web3.storage headless
+[] pinapple js or any other ipfs storage service
+
 
 ## What's next? How do I make an app with this?
 

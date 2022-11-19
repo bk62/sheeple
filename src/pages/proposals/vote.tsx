@@ -1,14 +1,18 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, useRef } from "react";
 import Link from "next/link";
 import type { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Dialog, Transition } from '@headlessui/react'
+import { useAccount } from "wagmi";
+import { useSignMessage } from 'wagmi'
+import { verifyMessage, solidityPack } from 'ethers/lib/utils'
 
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
 import { VoteSchema } from "../../server/trpc/validation_schemas";
+import { ChoiceCodes } from "../../server/trpc/router/vote";
 
 import type { WithGetLayout } from "../page";
 import { getSidebarLayout } from "../../components/layouts/sidebar";
@@ -16,6 +20,9 @@ import { getSidebarLayout } from "../../components/layouts/sidebar";
 import Button from "../../components/controls/buttons";
 import { Input, Textarea, FormError } from "../../components/controls/input";
 import Protected from "../../components/access/protected";
+import ConnectWallet from "../../components/access/connect_wallet";
+import { SignMessage } from "../../components/auth/SignMessage";
+import WalletDisplay from "../../components/auth/WalletDisplay";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -29,8 +36,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 }
 
+
+
 const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetLayout = ({ daoId, proposalId }) => {
     const { data: session, status: sessionStatus } = useSession();
+
+    const { address, isConnected } = useAccount();
 
     // Get choices values
     const { data: proposal } = trpc.proposal.get.useQuery({ id: proposalId });
@@ -39,7 +50,7 @@ const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetL
         choices = proposal.choices.choices as string[] || [];
     }
 
-
+    // DB Persist:
     const mutation = trpc.vote.vote.useMutation({
         // open modal linking to created item's page on success
         onSuccess: (data, variables, context) => {
@@ -56,10 +67,17 @@ const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetL
             proposalId: proposalId,
             choice: "",
             reason: "",
+            signatureMessage: "",
+            signature: ""
         }
     });
 
     const triggerMutation = async (values: RouterTypes["vote"]["vote"]["input"]) => {
+        try {
+            await signMessageAsync({ message: message.current || "" })
+        } catch (e) {
+
+        }
         await mutation.mutateAsync(values);
         form.reset();
     }
@@ -70,6 +88,35 @@ const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetL
     const closeModal = () => setIsOpen(false);
     const openModal = () => setIsOpen(true);
 
+    // Update signed message
+    const message = useRef<string>();
+    // const recoveredAddress = useRef<string>();
+    const { data: signature, error: sigError, signMessageAsync } = useSignMessage({
+        onSuccess(data, variables) {
+            // Verify signature when sign message succeeds
+            const recAddress = verifyMessage(variables.message, data)
+            if (address !== recAddress) {
+                console.error("Mismatched address:", address, recAddress);
+            }
+            // recoveredAddress.current = address
+        }
+    });
+    const { watch } = form;
+    useEffect(() => {
+        const subscription = watch((value, opts) => {
+            // console.log(value);
+            // TODO hardcoded for OpenZepplin simple counter rn
+            let choice: string | number = value.choice || "";
+            if (choice in ChoiceCodes) {
+                choice = ChoiceCodes[choice] || 0;
+            }
+            const reason = value.reason || "";
+            // TODO incomplete!!!
+            // TODO OZ uses keccak256(typehash) -- see vote with sig method codes!
+            message.current = solidityPack(["uint8", "string"], [choice, reason])
+        });
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     if (sessionStatus === "loading") {
         return <p>Loading...</p>
@@ -79,17 +126,25 @@ const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetL
         return <Protected />
     }
 
+    if (!isConnected) {
+        return <ConnectWallet message="You'll need to connect your wallet to sign your vote so it can be verified on-chain." />
+    }
+
     return (
         <>
             <h1 className="form-title">
                 Vote on Proposal
             </h1>
-            <div className="form-subtitle">
-                Please fill out the following form to vote on this proposal
+            <div className="form-subtitle mb-0.5">
+                Please fill out the following form to vote on this proposal.
             </div>
-            {/* <p>
-                {JSON.stringify(form.formState.errors)}
-            </p> */}
+            <div className="form-subtitle">
+                You will be prompted to sign your vote before submitting it. Signing does not cost any money.
+            </div>
+
+
+
+
             <form onSubmit={form.handleSubmit(triggerMutation)}>
 
                 {/* <fieldset className="w-full mb-6">
@@ -104,6 +159,31 @@ const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetL
                         <p>{form.formState.errors.choice?.message}</p>
                     )}
                 </fieldset> */}
+
+                {isConnected && address && (
+                    <fieldset className="w-full mb-2 text-gray-400 text-xs">
+                        <div className="mb-6 max-w-lg flex flex-col md:flex-row justify-between items-center">
+                            <div className="text-xs flex flex-col justify-start items-start text-gray-400 px-4 pt-1 pb-0 mb-2">
+                                <div className="flex items-center mb-1">
+                                    <span className="rounded-full shrink-0 bg-green-500 w-1.5 h-1.5 m-2"></span>
+                                    <div className="grow-0 justify-self-start text-xss">
+                                        Wallet Connected
+                                    </div>
+                                </div>
+                                <WalletDisplay className="ml-3.5" address={address} />
+                            </div>
+                            <div>
+                                <div>Message: {"  "} {message.current || "  _____"}</div>
+                                {/* <div>Recovered Address: {"  "} {recoveredAddress.current || "  _____"}</div> */}
+                                {/* <div>Signature: {"  "} {signature || " _____"}</div> */}
+                            </div>
+                        </div>
+                        <input type="hidden" {...form.register("proposalId")} />
+                        {sigError && (
+                            <FormError errorMessage={sigError?.message} />
+                        )}
+                    </fieldset>
+                )}
 
                 <fieldset className="w-full mb-6">
                     <label className="form-label" htmlFor="choice">Choice:</label>
@@ -198,6 +278,11 @@ const VoteOnProposal: React.FC<{ daoId: string, proposalId: string }> & WithGetL
                     </Link>
                 </div>
             </form>
+
+
+
+
+
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={closeModal}>
                     <Transition.Child

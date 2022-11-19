@@ -23,4 +23,6 @@ export const VoteSchema = z.object({
     daoId: z.string().min(1),
     proposalId: z.string().min(1),
     // voterId: z.string().min(1) //
+    signatureMessage: z.string(),
+    signature: z.string()
 })

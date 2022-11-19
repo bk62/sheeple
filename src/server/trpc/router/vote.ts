@@ -2,15 +2,22 @@ import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { VoteSchema } from "../validation_schemas";
 
+export const ChoiceCodes: Record<string, number> = {
+    "No": 0,
+    "Yes": 1,
+    "Abstain": 2
+}
 
 export const voteRouter = router({
     vote: protectedProcedure
         .input(VoteSchema)
         .mutation(
             async ({ input, ctx }) => {
+                // TODO hardcoded for OZ gov simple counter rn
                 const voterId = ctx.session?.user?.id;
                 const vote = await ctx.prisma.vote.create({
                     data: {
+                        // choiceCode: ChoiceCodes[input.choice || ],
                         ...input,
                         voterId
                     }
