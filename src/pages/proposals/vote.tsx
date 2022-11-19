@@ -12,7 +12,7 @@ import { verifyMessage, solidityPack } from 'ethers/lib/utils'
 import { trpc, type RouterTypes } from "../../utils/trpc";
 import useZodForm from "../../hooks/useZodForm";
 import { VoteSchema } from "../../server/trpc/validation_schemas";
-import { ChoiceCodes } from "../../server/trpc/router/vote";
+import { ChoiceCodes } from "../../server/trpc/validation_schemas";
 
 import type { WithGetLayout } from "../page";
 import { getSidebarLayout } from "../../components/layouts/sidebar";

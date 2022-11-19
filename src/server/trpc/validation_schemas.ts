@@ -16,6 +16,12 @@ export const CreateProposalSchema = z.object({
 });
 
 
+export const ChoiceCodes: Record<string, number> = {
+    "No": 0,
+    "Yes": 1,
+    "Abstain": 2
+}
+
 
 export const VoteSchema = z.object({
     choice: z.string({ required_error: "Choice is required." }).min(1, { message: "Choice is required." }), // TODO one of ...

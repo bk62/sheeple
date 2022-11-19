@@ -1,12 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
-import { VoteSchema } from "../validation_schemas";
+import { VoteSchema, ChoiceCodes } from "../validation_schemas";
 
-export const ChoiceCodes: Record<string, number> = {
-    "No": 0,
-    "Yes": 1,
-    "Abstain": 2
-}
 
 export const voteRouter = router({
     vote: protectedProcedure

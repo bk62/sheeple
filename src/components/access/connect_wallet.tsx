@@ -17,7 +17,7 @@ const ConnectWallet: React.FC<{ message?: string }> = ({ message = "" }) => {
 
     return (
         <>
-            <div className="flex-1 flex flex-col items-center justify-center p-10 md:p-20">
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-10 md:p-20">
                 <h6 className="text-3xl text-gray-300 mb-5">Connect Wallet</h6>
                 {
                     message && (
